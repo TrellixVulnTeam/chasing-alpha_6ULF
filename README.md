@@ -1,1 +1,1 @@
-# chasing-alpha
+# Chasing Alpha
