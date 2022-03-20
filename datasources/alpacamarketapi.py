@@ -38,11 +38,11 @@ class AlpacaMarketDataApi:
 
 
     def get_all_tickers(self):
-        nasdaq = getNasdaqTickers()
-        other = getOtherTickers()
-        union_nasdaq_other = eliminateDuplicates(nasdaq, other)
+        nasdaq = get_nasdaq_tickers()
+        other = get_other_tickers()
+        union_nasdaq_other = eliminate_duplicates(nasdaq, other)
 
-        wanted_unwanted_tickers = splitSetWantedAndUnwantedTickers(union_nasdaq_other, UNWANTED_FIFTH_LETTER)
+        wanted_unwanted_tickers = split_set_wanted_and_unwanted_tickers(union_nasdaq_other, UNWANTED_FIFTH_LETTER)
 
 if __name__ == '__main__':
     app = AlpacaMarketDataApi()
