@@ -28,7 +28,7 @@ ONE_WEEK_AGO = (date.today() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
 FIVE_YEARS_AGO = (date.today() - datetime.timedelta(days=(365*5))).strftime("%Y-%m-%d")
 
 
-def clean_historical_data(dataframe: DataFrame, ticker: str) -> DataFrame:
+def clean_historical_price_data(dataframe: DataFrame, ticker: str) -> DataFrame:
     if "ticker" not in dataframe:
         dataframe["ticker"] = ticker
 
@@ -56,14 +56,18 @@ class AlpacaMarketDataApi:
         # Number of tickers whose data was successfully retrieved and stored
         self.actual_tickers_processed = 0
 
-    # start and end date format: %Y-%m-%d (2020-01-01)
     @sleep_and_retry
     @limits(calls=ALPACA_API_CALL_LIMIT, period=ONE_MIN_ONE_SEC)
     def get_data_by_ticker(self, ticker: str, time_frame, start: str, end: str):
+        """
+        start and end date format: %Y-%m-%d (2020-01-01)
+        API calls limited to 199 per 61 seconds to conform to Alpaca rate limit.
+        :return: a pandas dataframe
+        """
         try:
             self.timer.start("get_data_by_ticker")
             dataframe = self.api.get_bars(ticker, time_frame, start, end, adjustment='raw').df
-            dataframe = clean_historical_data(dataframe, ticker)
+            dataframe = clean_historical_price_data(dataframe, ticker)
             return dataframe
         except APIError:
             print(f"APIError: unable to retrieve {ticker}")
@@ -72,6 +76,10 @@ class AlpacaMarketDataApi:
 
 
     def save_all_ticker_data(self):
+        """
+        Saves tickers (found in list) to a csv file.
+        :return: void
+        """
         list_of_all_tickers = get_all_tickers()
 
         self.timer.start("save_all_tickers")
@@ -83,15 +91,15 @@ class AlpacaMarketDataApi:
                 dataframe.to_csv(r'D:\data\market_data.csv', mode="a", index=False, header=False)
                 print(f"Tickers processed so far: {self.actual_tickers_processed}")
             if self.actual_tickers_processed == 1000:
-                total_time_elasped = self.timer.stop("save_all_tickers")
-                print(f"Done. Tickers processed: {self.actual_tickers_processed}. Total time elapsed: {total_time_elasped}")
+                total_time_elapsed = self.timer.stop("save_all_tickers")
+                print(f"Done. Tickers processed: {self.actual_tickers_processed}. Total time elapsed: {total_time_elapsed}")
                 return
 
 
 if __name__ == '__main__':
     app = AlpacaMarketDataApi()
-    app.save_all_ticker_data()
+    #app.save_all_ticker_data()
 
-    #df = app.get_data_by_ticker("AAPL", HOURLY, "2021-01-01", ONE_WEEK_AGO)
-    #print(df)
+    df = app.get_data_by_ticker("AAPL", HOURLY, "2021-01-01", ONE_WEEK_AGO)
+    print(df)
 
