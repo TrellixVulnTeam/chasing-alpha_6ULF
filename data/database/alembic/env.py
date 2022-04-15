@@ -9,8 +9,8 @@ import sys, os
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-from datasources.database.connection import DATABASE_URI
-from datasources.models.market_data_model import Base
+from data.database.connection import DATABASE_URI
+from data.models.market_data_model import Base
 
 config = context.config
 path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
