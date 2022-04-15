@@ -9,6 +9,8 @@ import sys, os
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
+from datasources.database.connection import DATABASE_URI
+from datasources.models.market_data_model import Base
 
 config = context.config
 path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
@@ -18,7 +20,6 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
     sys.path.insert(0, path)
-    from datasources.database.connection import DATABASE_URI
     config.set_main_option('sqlalchemy.url', DATABASE_URI)
 
 # add your model's MetaData object here
@@ -26,7 +27,6 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 sys.path.insert(0, path)
-from datasources.models.market_data_model import Base
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
