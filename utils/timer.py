@@ -5,7 +5,7 @@ Use this class to track the time performance of your code.
 '''
 
 class TimeError(Exception):
-    """Add customer error. Ex. raise TimeError(f"Custom Error")"""
+    """Add custom error. Ex. raise TimeError(f"Custom Error")"""
 
 class Timer:
     def __init__(self, logger=None):

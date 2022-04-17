@@ -1,8 +1,8 @@
 ### alpaca market data api model ###
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, BigInteger, TIMESTAMP, Float, DateTime
-from sqlalchemy.dialects.postgresql import MONEY
+from sqlalchemy import Column, String, BigInteger, Float, DateTime
+
 
 Base = declarative_base()
 

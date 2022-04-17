@@ -7,9 +7,8 @@ from utils.timer import Timer
 from datetime import date
 from ratelimit import limits, sleep_and_retry
 from pandas import DataFrame
-import numpy as np
-import os
 from typing import Final
+import os
 
 '''
 Requires .env file placed at root level.
@@ -78,7 +77,7 @@ class AlpacaMarketDataApi:
 
     def save_all_ticker_data(self):
         """
-        Saves tickers (found in list) to a csv file.
+        Saves up to 1000 tickers (found in list) to a csv file.
         :return: void
         """
         list_of_all_tickers = get_all_tickers()
@@ -95,13 +94,4 @@ class AlpacaMarketDataApi:
                 total_time_elapsed = self.timer.stop("save_all_tickers")
                 print(f"Done. Tickers processed: {self.actual_tickers_processed}. Total time elapsed: {total_time_elapsed}")
                 return
-
-
-if __name__ == '__main__':
-    app = AlpacaMarketDataApi()
-    #app.save_all_ticker_data()
-
-    df = app.get_data_by_ticker("AAPL", HOURLY, "2010-01-01", ONE_WEEK_AGO)
-    df_null = df[df.isna().any(axis=1)]
-    print(df)
 

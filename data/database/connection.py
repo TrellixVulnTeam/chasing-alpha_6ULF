@@ -31,16 +31,14 @@ def connect(db_name, db_user, db_password, db_host, db_port):
     """
     conn = None
     try:
-        print('Connecting to the PostgreSQL...........')
+        print('Connecting to PostgreSQL...........')
         conn = psycopg2.connect(
             database=db_name, user=db_user, password=db_password, host=db_host, port=db_port
         )
         print("Connection successful..................")
 
     except OperationalError as err:
-        # passing exception to function
         show_psycopg2_exception(err)
-        # set the connection to 'None' in case of error
         conn = None
     return conn
 
@@ -55,7 +53,6 @@ def show_psycopg2_exception(err):
     err_type, err_obj, traceback = sys.exc_info()
     # get the line number when exception occurred
     line_n = traceback.tb_lineno
-    # print the connect() error
     print ("\npsycopg2 ERROR:", err, "on line number:", line_n)
     print ("psycopg2 traceback:", traceback, "-- type:", err_type)
     # psycopg2 extensions.Diagnostics object attribute
