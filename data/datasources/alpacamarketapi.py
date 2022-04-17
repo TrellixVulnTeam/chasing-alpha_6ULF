@@ -7,6 +7,7 @@ from utils.timer import Timer
 from datetime import date
 from ratelimit import limits, sleep_and_retry
 from pandas import DataFrame
+from data.datacleaner.cleaner import add_ticker_column_and_populate, remove_columns
 from typing import Final
 import os
 
@@ -28,19 +29,10 @@ ONE_WEEK_AGO = (date.today() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
 FIVE_YEARS_AGO = (date.today() - datetime.timedelta(days=(365*5))).strftime("%Y-%m-%d")
 
 
-def clean_historical_price_data(dataframe: DataFrame, ticker: str) -> DataFrame:
-    if "ticker" not in dataframe:
-        dataframe["ticker"] = str(ticker)
-
-    if "trade_count" in dataframe.columns:
-        dataframe.drop("trade_count", axis=1, inplace=True)
-
-    if "vwap" in dataframe.columns:
-        dataframe.drop("vwap", axis=1, inplace=True)
-    return dataframe
-
-
 def get_all_tickers():
+    """
+    :return: A tuple where index 0 is the wanted (filtered) list of tickers and index 1 is the unwanted tickers
+    """
     nasdaq = get_nasdaq_tickers()
     other = get_other_tickers()
     union_nasdaq_other = eliminate_duplicates(nasdaq, other)
@@ -62,12 +54,15 @@ class AlpacaMarketDataApi:
         """
         start and end date format: %Y-%m-%d (2020-01-01)
         API calls limited to 199 per 61 seconds to conform to Alpaca rate limit.
+        :param ticker: the name of the ticker symbol
+        :param time_frame: the candlestick time period
+        :param start: the start date in which to query data from
+        :param end: the end date in which to stop querying data from
         :return: a pandas dataframe
         """
         try:
             self.timer.start("get_data_by_ticker")
             dataframe = self.api.get_bars(ticker, time_frame, start, end, adjustment='raw').df
-            dataframe = clean_historical_price_data(dataframe, ticker)
             return dataframe
         except APIError:
             print(f"APIError: unable to retrieve {ticker}")
