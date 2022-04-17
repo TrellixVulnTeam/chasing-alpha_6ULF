@@ -2,12 +2,9 @@ import datetime
 
 from alpaca_trade_api.rest import TimeFrame, TimeFrameUnit, APIError, REST
 from dotenv import load_dotenv, find_dotenv
-from jupyternotebook.tickers import *
 from utils.timer import Timer
 from datetime import date
 from ratelimit import limits, sleep_and_retry
-from pandas import DataFrame
-from data.datacleaner.cleaner import add_ticker_column_and_populate, remove_columns
 from typing import Final
 import os
 
@@ -24,20 +21,8 @@ HOURLY = TimeFrame(59, TimeFrameUnit.Minute)
 ALPACA_API_CALL_LIMIT = 199
 ONE_MIN_ONE_SEC = 61
 
-UNWANTED_FIFTH_LETTER = ["W", "R", "Q"]
 ONE_WEEK_AGO = (date.today() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
 FIVE_YEARS_AGO = (date.today() - datetime.timedelta(days=(365*5))).strftime("%Y-%m-%d")
-
-
-def get_all_tickers():
-    """
-    :return: A tuple where index 0 is the wanted (filtered) list of tickers and index 1 is the unwanted tickers
-    """
-    nasdaq = get_nasdaq_tickers()
-    other = get_other_tickers()
-    union_nasdaq_other = eliminate_duplicates(nasdaq, other)
-
-    return split_set_wanted_and_unwanted_tickers(union_nasdaq_other, UNWANTED_FIFTH_LETTER)
 
 
 class AlpacaMarketDataApi:
