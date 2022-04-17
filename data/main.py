@@ -7,7 +7,7 @@ from data.models.market_data_model import TickerPrice
 """
 Entry point for getting data from API's such as Alpaca.
 
-Objective og 'database' folder:
+Objective og 'data' folder:
  1. Retrieve market data from 3rd party APIs.
  2. Clean the data and insert into the database periodically.
  3. Be able to query from the database.
