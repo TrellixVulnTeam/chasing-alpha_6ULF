@@ -1,20 +1,20 @@
 ### alpaca market data api model ###
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, BigInteger, TIMESTAMP, Float
+from sqlalchemy import Column, String, BigInteger, TIMESTAMP, Float, DateTime
 from sqlalchemy.dialects.postgresql import MONEY
 
 Base = declarative_base()
 
 class TickerPrice(Base):
     __tablename__ = 'ticker_prices'
-    timestamp = Column(TIMESTAMP, primary_key=True)
+    timestamp = Column(DateTime, primary_key=True)
     open = Column(Float)
     high = Column(Float)
     low = Column(Float)
     close = Column(Float)
     volume = Column(BigInteger)
-    ticker = Column(String)
+    ticker = Column(String, primary_key=True)
 
     def __repr__(self):
         return "<TickerPrice(time='{}', ticker='{}', open='{}', high='{}', low='{}', close='{}', volume='{}')>" \

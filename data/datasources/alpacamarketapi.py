@@ -31,7 +31,7 @@ FIVE_YEARS_AGO = (date.today() - datetime.timedelta(days=(365*5))).strftime("%Y-
 
 def clean_historical_price_data(dataframe: DataFrame, ticker: str) -> DataFrame:
     if "ticker" not in dataframe:
-        dataframe["ticker"] = ticker
+        dataframe["ticker"] = str(ticker)
 
     if "trade_count" in dataframe.columns:
         dataframe.drop("trade_count", axis=1, inplace=True)
@@ -101,6 +101,7 @@ if __name__ == '__main__':
     app = AlpacaMarketDataApi()
     #app.save_all_ticker_data()
 
-    df = app.get_data_by_ticker("AAPL", HOURLY, "2021-01-01", ONE_WEEK_AGO)
+    df = app.get_data_by_ticker("AAPL", HOURLY, "2010-01-01", ONE_WEEK_AGO)
+    df_null = df[df.isna().any(axis=1)]
     print(df)
 
