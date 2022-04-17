@@ -9,17 +9,17 @@ import sys, os
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-from data.database.connection import DATABASE_URI
-from data.models.market_data_model import Base
 
 config = context.config
 path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
     sys.path.insert(0, path)
+    from data.database.connection import DATABASE_URI
     config.set_main_option('sqlalchemy.url', DATABASE_URI)
 
 # add your model's MetaData object here
@@ -27,7 +27,8 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 sys.path.insert(0, path)
-target_metadata = Base.metadata
+from data.models import market_data_model
+target_metadata = market_data_model.Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
