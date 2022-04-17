@@ -7,12 +7,12 @@ from data.models.market_data_model import TickerPrice
 """
 Entry point for getting data from API's such as Alpaca.
 
-Objective:
- 1. Cleaning the data and inserting into the database.
- 2. Reading from the database.
- 3. Keeps data in database up to date.
+Objective og 'database' folder:
+ 1. Retrieve market data from 3rd party APIs.
+ 2. Clean the data and insert into the database periodically.
+ 3. Be able to query from the database.
+ 4. Keep data in database up to date.
 
-Establishing a connecting to database in done in [connection.py]
 """
 
 class ChasingAlphaData:
