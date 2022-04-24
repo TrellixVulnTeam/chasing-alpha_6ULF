@@ -2,6 +2,8 @@ import datetime
 
 from alpaca_trade_api.rest import TimeFrame, TimeFrameUnit, APIError, REST
 from dotenv import load_dotenv, find_dotenv
+
+from data.datasources.yahoo_finance import get_all_tickers
 from utils.timer import Timer
 from datetime import date
 from ratelimit import limits, sleep_and_retry
@@ -29,7 +31,7 @@ class AlpacaMarketDataApi:
 
     def __init__(self):
         self.api = REST(ALPACA_API_KEY, ALPACA_SECRET_KEY, BASE_URL, api_version=ALPACA_API_VERSION)
-        self.timer = Timer()
+
         # Number of tickers whose data was successfully retrieved and stored
         self.actual_tickers_processed = 0
 
@@ -46,13 +48,13 @@ class AlpacaMarketDataApi:
         :return: a pandas dataframe
         """
         try:
-            self.timer.start("get_data_by_ticker")
+            Timer.start("get_data_by_ticker")
             dataframe = self.api.get_bars(ticker, time_frame, start, end, adjustment='raw').df
             return dataframe
         except APIError:
             print(f"APIError: unable to retrieve {ticker}")
         finally:
-            self.timer.stop_and_print_elapsed_time("get_data_by_ticker")
+            Timer.stop_and_print_elapsed_time("get_data_by_ticker")
 
 
     def save_all_ticker_data(self):
@@ -62,7 +64,7 @@ class AlpacaMarketDataApi:
         """
         list_of_all_tickers = get_all_tickers()
 
-        self.timer.start("save_all_tickers")
+        Timer.start("save_all_tickers")
         for ticker in list_of_all_tickers[0]:
             dataframe = self.get_data_by_ticker(ticker, HOURLY, FIVE_YEARS_AGO, ONE_WEEK_AGO)
 
@@ -71,7 +73,7 @@ class AlpacaMarketDataApi:
                 dataframe.to_csv(r'D:\data\market_data.csv', mode="a", index=False, header=False)
                 print(f"Tickers processed so far: {self.actual_tickers_processed}")
             if self.actual_tickers_processed == 1000:
-                total_time_elapsed = self.timer.stop("save_all_tickers")
+                total_time_elapsed = Timer.stop("save_all_tickers")
                 print(f"Done. Tickers processed: {self.actual_tickers_processed}. Total time elapsed: {total_time_elapsed}")
                 return
 
