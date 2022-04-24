@@ -19,8 +19,9 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
     sys.path.append(path)
-    from data.database.connection import DATABASE_URI
-    config.set_main_option('sqlalchemy.url', DATABASE_URI)
+    from data.database.connection import Connect
+    connect = Connect()
+    config.set_main_option('sqlalchemy.url', connect.DATABASE_URI)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
