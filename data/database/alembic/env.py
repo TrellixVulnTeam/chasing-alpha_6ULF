@@ -18,7 +18,7 @@ path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-    sys.path.insert(0, path)
+    sys.path.append(path)
     from data.database.connection import DATABASE_URI
     config.set_main_option('sqlalchemy.url', DATABASE_URI)
 
