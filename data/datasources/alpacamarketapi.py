@@ -19,7 +19,8 @@ ALPACA_API_VERSION = "v2"
 ALPACA_API_KEY: Final = os.getenv("ALPACA_MARKET_DATA_API_KEY")
 ALPACA_SECRET_KEY = os.getenv("ALPACA_MARKET_DATA_SECRET_KEY")
 BASE_URL = "https://paper-api.alpaca.markets"
-HOURLY = TimeFrame(59, TimeFrameUnit.Minute)
+HOURLY_TIMEFRAME = TimeFrame(59, TimeFrameUnit.Minute)
+FIVE_MINUTE_TIMEFRAME = TimeFrame(5, TimeFrameUnit.Minute)
 ALPACA_API_CALL_LIMIT = 199
 ONE_MIN_ONE_SEC = 61
 
@@ -48,14 +49,10 @@ class AlpacaMarketDataApi:
         :return: a pandas dataframe
         """
         try:
-            Timer.start("get_data_by_ticker")
             dataframe = self.api.get_bars(ticker, time_frame, start, end, adjustment='raw').df
             return dataframe
         except APIError:
             print(f"APIError: unable to retrieve {ticker}")
-        finally:
-            Timer.stop_and_print_elapsed_time("get_data_by_ticker")
-
 
     def save_all_ticker_data(self):
         """
@@ -66,7 +63,7 @@ class AlpacaMarketDataApi:
 
         Timer.start("save_all_tickers")
         for ticker in list_of_all_tickers[0]:
-            dataframe = self.get_data_by_ticker(ticker, HOURLY, FIVE_YEARS_AGO, ONE_WEEK_AGO)
+            dataframe = self.get_data_by_ticker(ticker, HOURLY_TIMEFRAME, FIVE_YEARS_AGO, ONE_WEEK_AGO)
 
             if dataframe is not None:
                 self.actual_tickers_processed += 1
