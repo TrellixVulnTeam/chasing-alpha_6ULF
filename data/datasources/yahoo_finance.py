@@ -50,8 +50,8 @@ def get_dow_tickers():
     dow_set = set(symbol for symbol in dow[0].values.tolist())
     return dow_set
 
-def eliminate_duplicates(first_set, second_set):
-    union_set = set.union(first_set, second_set)
+def eliminate_duplicates(*ticker_sets):
+    union_set = set.union(*ticker_sets)
     return union_set
 
 def split_set_wanted_and_unwanted_tickers(set_to_split, list_of_fifth_letters):
