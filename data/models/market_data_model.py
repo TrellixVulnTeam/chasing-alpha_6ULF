@@ -14,6 +14,7 @@ class TickerPrice(Base):
     low = Column(Float)
     close = Column(Float)
     volume = Column(BigInteger)
+    vwap = Column(Float)
     ticker = Column(String, primary_key=True)
 
     def __repr__(self):
