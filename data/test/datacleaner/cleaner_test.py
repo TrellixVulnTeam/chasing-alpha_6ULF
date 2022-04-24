@@ -30,6 +30,10 @@ class TestDataCleaner(unittest.TestCase):
         df_contains_trade_count_col = "trade_count" in df
         self.assertFalse(df_contains_trade_count_col)
 
+    def test_remove_column_not_exist(self):
+        with self.assertRaises(Exception):
+            remove_columns(self.price_dataframe, "non_existent_column", in_place=False)
+
 
 
 if __name__ == '__main__':
