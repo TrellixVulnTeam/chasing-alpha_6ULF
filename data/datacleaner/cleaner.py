@@ -2,7 +2,7 @@ from pandas import DataFrame
 
 
 def add_ticker_column_and_populate(dataframe: DataFrame, ticker_name: str) -> DataFrame:
-    if "ticker" not in dataframe:
+    if "ticker" not in dataframe.columns:
         dataframe["ticker"] = str(ticker_name)
 
     return dataframe

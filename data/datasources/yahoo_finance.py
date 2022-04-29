@@ -25,6 +25,7 @@ def get_all_tickers():
     nasdaq = get_nasdaq_tickers()
     other = get_other_tickers()
     union_nasdaq_other = eliminate_duplicates(nasdaq, other)
+    union_nasdaq_other = clean_tickers(union_nasdaq_other)
 
     return split_set_wanted_and_unwanted_tickers(union_nasdaq_other, UNWANTED_FIFTH_LETTER)
 
@@ -71,3 +72,19 @@ def split_set_wanted_and_unwanted_tickers(set_to_split, list_of_fifth_letters):
             wanted_tickers_set.add(symbol)
 
     return wanted_tickers_set, unwanted_tickers_set
+
+def has_fifth_letter(symbol, list_of_fifth_letters):
+    if len(symbol) < 1 or (len(symbol) > 4 and symbol[-1] in list_of_fifth_letters):
+        return True
+
+    return False
+
+def alphabetic_only(string):
+    if string.isalpha():
+        return True
+
+    return False
+
+def clean_tickers(set_of_tickers):
+    return filter(alphabetic_only, set_of_tickers)
+
