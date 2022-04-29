@@ -21,6 +21,20 @@ Objective og 'data' folder:
  4. Keep data in database up to date.
 
 """
+
+def fill_database():
+    alpaca_market_data_api = AlpacaMarketDataApi()
+    connect_db = Connect()
+    crud = Crud(connect_db)
+
+    chasing_alpha_data = ChasingAlphaData(
+        connect_db,
+        alpaca_market_data_api,
+        crud
+    )
+
+    chasing_alpha_data.save_all_ticker_data_to_db()
+
 class ChasingAlphaData:
 
     def __init__(self, connect: Connect, alpaca_api: AlpacaMarketDataApi, crud_ops: Crud):
@@ -75,14 +89,4 @@ class ChasingAlphaData:
             self.crud_ops.copy_dataframe_to_database(connection, df, TickerPrice.__tablename__)
 
 if __name__ == "__main__":
-    alpaca_market_data_api = AlpacaMarketDataApi()
-    connect_db = Connect()
-    crud = Crud(connect_db)
-
-    chasing_alpha_data = ChasingAlphaData(
-        connect_db,
-        alpaca_market_data_api,
-        crud
-    )
-
-    chasing_alpha_data.save_all_ticker_data_to_db()
+    fill_database()
