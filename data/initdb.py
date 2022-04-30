@@ -62,7 +62,7 @@ class ChasingAlphaData:
         df = self.alpaca.get_data_by_ticker(ticker, FIVE_MINUTE_TIMEFRAME, FIVE_YEARS_AGO, ONE_WEEK_AGO)
         return df
 
-    def get_df_by_ticker_return_df_ticker(self, ticker: str) -> (DataFrame, str):
+    def get_df_by_ticker_return_df_ticker(self, ticker: str):
         df = self.alpaca.get_data_by_ticker(ticker, FIVE_MINUTE_TIMEFRAME, FIVE_YEARS_AGO, ONE_WEEK_AGO)
         return df, ticker
 
@@ -89,4 +89,4 @@ class ChasingAlphaData:
             self.crud_ops.copy_dataframe_to_database(connection, df, TickerPrice.__tablename__)
 
 if __name__ == "__main__":
-    fill_database()
+    print("hi")

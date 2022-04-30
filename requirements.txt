@@ -1,0 +1,13 @@
+###### Run pip3 install -r requirements.txt ######
+
+###### Requirements without Version Specifiers ######
+yahoo_fin
+
+
+###### Requirements with Version Specifiers ######
+python-dotenv == 0.20.0
+sqlalchemy == 1.4.36
+psycopg2 == 2.9.3
+pandas == 1.4.2
+alpaca_trade_api == 2.1.0
+ratelimit == 2.2.1
