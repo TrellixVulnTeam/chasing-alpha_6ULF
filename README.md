@@ -1,4 +1,4 @@
-# Chasing Alpha
+# Chasing Alpha (WIP)
 
 Welcome to Chasing Alpha, where we develop, test, and deploy alpha generating trading strategies!
 
