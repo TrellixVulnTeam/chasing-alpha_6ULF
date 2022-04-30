@@ -62,14 +62,14 @@ class ChasingAlphaData:
         df = self.alpaca.get_data_by_ticker(ticker, FIVE_MINUTE_TIMEFRAME, FIVE_YEARS_AGO, ONE_WEEK_AGO)
         return df
 
-    def get_df_by_ticker(self, ticker: str) -> (DataFrame, str):
+    def get_df_by_ticker_return_df_ticker(self, ticker: str) -> (DataFrame, str):
         df = self.alpaca.get_data_by_ticker(ticker, FIVE_MINUTE_TIMEFRAME, FIVE_YEARS_AGO, ONE_WEEK_AGO)
         return df, ticker
 
     # Not in use, Alpaca rate limit is a bottleneck. Paying for premium data access will fix this.
     def process_dataframe_multi_threaded(self, ten_wanted_list, connection):
         with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
-            for df, ticker in executor.map(self.get_df_by_ticker, ten_wanted_list):
+            for df, ticker in executor.map(self.get_df_by_ticker_return_df_ticker, ten_wanted_list):
 
                 df = add_ticker_column_and_populate(df, ticker)
                 remove_columns(df, "trade_count")
