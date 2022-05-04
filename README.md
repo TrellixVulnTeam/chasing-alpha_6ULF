@@ -1,9 +1,9 @@
-# Chasing Alpha
+# Chasing Alpha (WIP)
 
 Welcome to Chasing Alpha, where we develop, test, and deploy alpha generating trading strategies!
 
 ## Data Folder
-For ingestion data from third party apis, cleaning and storing.
+For ingesting data from third party apis, cleaning, storing, and analysis/discovery.
 
 ## Backtest folder
 
@@ -15,4 +15,7 @@ For testing on a paper account with live execution and fake money.
 
 ## Setup
 Important notes:
-* You should run this project in a dedicated environment
+* Set python interpreter to dedicated venv (included)
+* Install packges in requirements file
+* Have docker installed
+* Have postgres installed
