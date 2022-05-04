@@ -11,3 +11,4 @@ psycopg2 == 2.9.3
 pandas == 1.4.2
 alpaca_trade_api == 2.1.0
 ratelimit == 2.2.1
+ibapi == 9.81.1.post1
